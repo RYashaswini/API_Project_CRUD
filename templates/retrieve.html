@@ -1,0 +1,107 @@
+
+{% extends 'index.html' %}
+
+{% block content %}
+
+<!--<h1>Home Page</h1>-->
+
+<div class="container-fluid" style="margin-top:50px;">
+    <div class="col-md-offset-3 col-md-6">
+        <h3 class="page-header text-primary text-center"><i class='fa fa-database'> CRUD</i></h3>
+
+
+        <style>
+            th {
+                text-align: center;
+            }
+
+            .center {
+                text-align: center;
+            }
+        </style>
+
+        <input type="text" id="myInput" onkeyup="myFunction()" class="form-control form-control-lg"
+            placeholder="Search Here">
+
+        <div class="col-md-6 pull-right">
+            <table class="table">
+                <tr>
+                    <th><a class="btn btn-success btn-block" href="{% url 'create' %}">Register(CRUD)</a><br></th>
+                </tr>
+            </table>
+        </div>
+
+        <table class="table table-bordered" id="myTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Shipping Mode</th>
+                    <th>Journal</th>
+                    <th>Charges</th>
+                    <th>Image</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mydata in response %}
+
+                <tr>
+                    <td>{{mydata.id}}</td>
+                    <td>{{mydata.title}}</td>
+                    <td>{{mydata.author}}</td>
+                    <td>{{mydata.email}}</td>
+                    <td>{{mydata.date}}</td>
+                    <td>{{mydata.shipping}}</td>
+                    <td>{{mydata.journal}}</td>
+                    <td>{{mydata.charges}}</td>
+
+                    <td>
+                        {% if mydata.myimage %}
+                        <img src="{{mydata.myimage}}" width=100px, alt="img">
+                        {% endif %}
+                    </td>
+                    <td><button class="btn btn-success form-control" onClick="editUser('{{mydata.id}}')"
+                            data-toggle="modal" data-target="#updateModal" )>Update</button></td>
+
+                    {% include 'update.html' %}
+                    <td><a class="btn btn-danger" href="{% url 'deleteobj' mydata.id %}">Delete</a></td>
+
+                </tr>
+            </tbody>
+            {%endfor%}
+        </table>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 1; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+</script>
+
+
+{% endblock %}
